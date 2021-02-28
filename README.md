@@ -20,7 +20,9 @@ Um sistema com interface grafica e banco para gerenciar um evento de treinamento
 ### Obrigatórios
 
 - :warning: [JDK](https://www.oracle.com/br/java/technologies/javase-downloads.html)
-- :warning: [MySQL Connector](https://dev.mysql.com/downloads/connector/j/)
+- :warning: [MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/)
+- :warning: [MySQL Server](https://dev.mysql.com/downloads/)
+- :warning: [Xampp](https://www.apachefriends.org/pt_br/download.html)
 
 ### Opcionais
 
