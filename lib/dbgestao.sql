@@ -6,6 +6,12 @@ DROP TABLE sala_evento;
 DROP TABLE espaco_cafe;
 DROP TABLE pessoa;
 
+-- excluir linhas da tabela
+DELETE FROM pessoa WHERE id_pessoa = 2;
+
+-- alterar linhas da tabela
+UPDATE espaco_cafe SET nome = "Espaco Z" WHERE id_espaco_cafe = 2;
+
 -- criar tabelas
 CREATE TABLE sala_evento(
 id_sala_evento INT NOT NULL AUTO_INCREMENT,
@@ -55,3 +61,22 @@ SELECT * FROM espaco_cafe;
 SELECT * FROM pessoa;
 
 SELECT P.nome, P.sobrenome, A.nome as Etapa2, B.nome as Etapa2, E.nome as Espaco from (pessoa P, sala_evento A, sala_evento B, espaco_cafe E) WHERE (P.id_sala_etapa1 = A.id_sala_evento and P.id_sala_etapa2 = B.id_sala_evento and P.id_espaco = E.id_espaco_cafe);
+
+-- selects usados nas consultas implementadas
+SELECT * FROM pessoa WHERE id_sala_etapa1 = 1;
+SELECT * FROM pessoa WHERE id_sala_etapa2 = 1;
+SELECT * FROM pessoa WHERE id_espaco = 1;
+
+SELECT * FROM sala_evento WHERE id_sala_evento = 1;
+SELECT * FROM espaco_cafe WHERE id_espaco_cafe = 1;
+SELECT * FROM pessoa WHERE id_pessoa = 1;
+
+SELECT pessoa.*, count(*) over () total_rows FROM pessoa;
+SELECT count(*) over () total_rows FROM espaco_cafe;
+SELECT count(*) over () total_rows FROM sala_evento;
+
+-- SELECT MAX(id_pessoa) FROM pessoa;
+-- SELECT MIN(id_pessoa) FROM pessoa;
+-- SELECT MIN(id_pessoa) FROM pessoa WHERE id_pessoa > 2;
+-- SELECT MIN(id_pessoa) FROM pessoa WHERE id_pessoa > (SELECT MIN(id_pessoa) FROM pessoa);
+-- DELETE FROM pessoa WHERE id_pessoa > (SELECT MIN(id_pessoa) FROM pessoa WHERE id_pessoa > (SELECT MIN(id_pessoa) FROM pessoa));

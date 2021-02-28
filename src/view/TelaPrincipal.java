@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 public class TelaPrincipal extends JFrame implements ActionListener {
 
 	Connection conn = null;
-	PreparedStatement pst = null;
+	PreparedStatement stmt = null;
 	ResultSet rs = null;
 	
 	private JPanel contentPane;
@@ -67,7 +67,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 	public TelaPrincipal() {
 		
 		// componentes
-		setTitle("DesafioGestao");
+		setTitle("DesafioGestao - Sistema para gestao de eventos");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -110,12 +110,12 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
 		
-		JDesktopPane desktop = new JDesktopPane();
+		desktop = new JDesktopPane();
 		desktop.setBackground(SystemColor.activeCaption);
 		contentPane.add(desktop, "name_126310450005800");
 		// fim dos componentes
 		
-		conn = ModuloConexao.conector();
+		conn = ModuloConexao.getConnection();
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mnitemConsEspacoCafe) {
@@ -143,8 +143,8 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 			if(CadPessoa.getStatus() == false) {
 				cadPessoa = new CadPessoa();
 				cadPessoa.setVisible(true);
-				add(cadPessoa);
-				CadPessoa.abrir();
+				desktop.add(cadPessoa);
+				CadSala.abrir();
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "Ja se encontra ativa");
@@ -159,7 +159,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 			if(CadSala.getStatus() == false) {
 				cadSala = new CadSala();
 				cadSala.setVisible(true);
-				add(cadSala);
+				desktop.add(cadSala);
 				CadSala.abrir();
 			}
 			else {
@@ -175,7 +175,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 			if(CadEspaco.getStatus() == false) {
 				cadEspaco = new CadEspaco();
 				cadEspaco.setVisible(true);
-				add(cadEspaco);
+				desktop.add(cadEspaco);
 				CadEspaco.abrir();
 			}
 			else {
@@ -191,7 +191,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 			if(ConsPessoa.getStatus() == false) {
 				consPessoa = new ConsPessoa();
 				consPessoa.setVisible(true);
-				add(consPessoa);
+				desktop.add(consPessoa);
 				ConsPessoa.abrir();
 			}
 			else {
@@ -207,7 +207,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 			if(ConsSala.getStatus() == false) {
 				consSala = new ConsSala();
 				consSala.setVisible(true);
-				add(consSala);
+				desktop.add(consSala);
 				ConsSala.abrir();
 			}
 			else {
@@ -223,7 +223,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 			if(ConsEspaco.getStatus() == false) {
 				consEspaco = new ConsEspaco();
 				consEspaco.setVisible(true);
-				add(consEspaco);
+				desktop.add(consEspaco);
 				ConsEspaco.abrir();
 			}
 			else {

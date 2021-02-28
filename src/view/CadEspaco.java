@@ -5,23 +5,35 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+
+import connection.ModuloConexao;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import model.bean.EspacoCafe;
-import model.dao.EspacoCafeDAO;
+import connection.ModuloConexao;
 
 public class CadEspaco extends JInternalFrame {
+
+	Connection conn = null;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;
+	
 	private JTextField txtEspaco1;
 	private JTextField txtEspaco2;
 	private List<EspacoCafe> lstEspacos;
@@ -47,9 +59,11 @@ public class CadEspaco extends JInternalFrame {
 	 */
 	public CadEspaco() {
 		
-		EspacoCafeDAO ed = new EspacoCafeDAO();
-		lstEspacos = ed.listar();
+		//EspacoCafeDAO_OLD ed = new EspacoCafeDAO_OLD();
+		//lstEspacos = ed.listar();
 		
+		// componentes
+		setClosable(true);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -57,7 +71,6 @@ public class CadEspaco extends JInternalFrame {
 				status = false;
 			}
 		});
-		setClosable(true);
 		setTitle("Cadastrar Espaco de Cafe");
 		setBounds(100, 100, 350, 170);
 		getContentPane().setLayout(null);
@@ -95,6 +108,11 @@ public class CadEspaco extends JInternalFrame {
 		});
 		btnSalvar.setBounds(120, 74, 90, 30);
 		panel.add(btnSalvar);
+		// fim dos componentes
+		
+		conn = ModuloConexao.getConnection();
+		
+		preencherText();
 
 	}
 
@@ -104,6 +122,23 @@ public class CadEspaco extends JInternalFrame {
 
 	public static void abrir() {
 		status = true;
+	}
+	
+	private void preencherText() {
+		String sql = "select * from espaco_cafe where id_espaco_cafe=?";
+		try {
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "1");
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				txtEspaco1.setText(rs.getString(2));
+			} else {
+
+			}
+		} catch (Exception e) {
+			System.out.println("erro ao consultar: "+e.getMessage());
+		}
 	}
 	
 	private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {

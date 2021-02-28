@@ -6,6 +6,9 @@ import java.awt.Panel;
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JInternalFrame;
@@ -25,23 +28,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.bean.SalaEvento;
-import model.dao.SalaEventoDAO;
+import model.dao.SalaEventoDAO_OLD;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ListSelectionModel;
 
-import model.dao.SalaEventoDAO;
+import model.dao.SalaEventoDAO_OLD;
 
 public class CadSala extends JInternalFrame {
-	private JTextField txtNome;
-	private JSpinner spinnerLotacao;
-	private SpinnerNumberModel aux;
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;
+	
 	private List<SalaEvento> lstSalas;
 
 //	check if window is ON - true | OFF - false
 	private static boolean status;
+	
+	private JTextField txtNome;
+	private JSpinner spinnerLotacao;
+	private SpinnerNumberModel aux;
 	private JTable table;
 	
 	/**
@@ -63,9 +72,11 @@ public class CadSala extends JInternalFrame {
 	 */
 	public CadSala() {
 		
-		SalaEventoDAO sd = new SalaEventoDAO();
-		lstSalas = sd.listar();
+		//SalaEventoDAO_OLD sd = new SalaEventoDAO_OLD();
+		//lstSalas = sd.listar();
 		
+		// componentes
+		setClosable(true);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -73,7 +84,6 @@ public class CadSala extends JInternalFrame {
 				status = false;
 			}
 		});
-		setClosable(true);
 		setTitle("Cadastrar Sala do Evento");
 		setBounds(100, 100, 400, 300);
 		getContentPane().setLayout(null);
@@ -109,33 +119,6 @@ public class CadSala extends JInternalFrame {
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Nome", "Lotacao"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setPreferredWidth(90);
-		table.getColumnModel().getColumn(0).setMinWidth(90);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setPreferredWidth(60);
-		table.getColumnModel().getColumn(1).setMinWidth(60);
-		table.setBorder(new LineBorder(new Color(0, 0, 0)));
 		scrollPane.setViewportView(table);
 		
 		JButton btnAdicionar = new JButton("Adicionar");
@@ -150,6 +133,7 @@ public class CadSala extends JInternalFrame {
 				btAdicionarActionPerformed(evt);
 			}
 		});
+		// fim dos componentes
 
 	}
 	
@@ -162,21 +146,19 @@ public class CadSala extends JInternalFrame {
 	}
 	
 	private void btAdicionarActionPerformed(java.awt.event.ActionEvent evt) {
-
-        SalaEvento s = new SalaEvento();
-        s.setNome(txtNome.getText());
-        
-        //	Para pegar valores digitados no spinner
-        try {
-        	spinnerLotacao.commitEdit();
-        }catch (java.text.ParseException e) {
-        	System.out.println("erro ao salvar lotacao: "+e.getMessage());
-		}
-        
-        s.setLotacao((Integer)spinnerLotacao.getValue());
-        lstSalas.add(s);
-        txtNome.setText("");
-        spinnerLotacao.setModel(aux);
-        
+		adicionar();
     }
+	
+	private void adicionar() {
+		String sql = "insert into sala_evento (nome, lotacao) values (?, ?)";
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, txtNome.getText());
+			stmt.setInt(2, (Integer) spinnerLotacao.getValue());
+			
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("erro ao adicionar: "+e.getMessage());
+		}
+	}
 }
