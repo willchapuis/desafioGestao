@@ -19,8 +19,8 @@ Um sistema com interface grafica e banco para gerenciar um evento de treinamento
 
 ### Obrigatórios
 
-- [JDK](https://www.oracle.com/br/java/technologies/javase-downloads.html)
-- [MySQL Connector](https://dev.mysql.com/downloads/connector/j/)
+- :warning: [JDK](https://www.oracle.com/br/java/technologies/javase-downloads.html)
+- :warning: [MySQL Connector](https://dev.mysql.com/downloads/connector/j/)
 
 ### Opcionais
 
@@ -28,9 +28,13 @@ Um sistema com interface grafica e banco para gerenciar um evento de treinamento
 - [Eclipse IDE](https://www.eclipse.org/downloads)
 - [Apache NetBeans IDE](https://netbeans.apache.org/download/index.html)
 
-## Configuração
+## Contribuintes
 
+- [William Chapuis](https://github.com/willchapuis/)
 
+## Tarefas Pendentes
 
-## Como rodar a aplicação
-
+- Desenvolvimento das funcionalidades
+- Testar e tratar a conexão com o banco de dados
+- Melhorar a organização dos arquivos do sistema
+- Melhorar a documentação
